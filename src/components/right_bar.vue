@@ -57,7 +57,6 @@ export default {
   computed:{
       date(){
         let res = new Date();
-        console.log(res);
         return res;
       }
   },

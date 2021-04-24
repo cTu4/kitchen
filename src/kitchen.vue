@@ -3,7 +3,7 @@
   <div id="kitchen" class="d-flex">
         <app-sidebar :tables=tables></app-sidebar>
         <div class="kanban d-flex" >
-          <column v-for="(dishes, index) in kanban" :dishes=dishes :index=index></column>
+          <column v-for="(dishes, index) in kanban" :id="index" :dishes=dishes :index=index></column>
         </div>
         <right-bar></right-bar>
   </div>
@@ -45,8 +45,8 @@ export default {
           {
             "table_number": 3,
             "name": "Steak Machette",
-            "time": "540",
-            "time_placement": "17:36:24",
+            "time": "1200",
+            "time_placement": "1619271360",
             "comment": "Without honey",
             "code": "D17",
             "status": "In progress",
@@ -60,7 +60,7 @@ export default {
             "table_number": 5,
             "name": "Steak Machette",
             "time": "540",
-            "time_placement": "17:36:24",
+            "time_placement": "1619273836",
             "comment": "Without honey",
             "code": "D17",
             "status": "In progress",
@@ -76,7 +76,7 @@ export default {
             "table_number": 6,
             "name": "Steak Machette",
             "time": "540",
-            "time_placement": "17:36:24",
+            "time_placement": "1619673336",
 
             "comment": "Without honey",
             "code": "D17",
@@ -91,7 +91,7 @@ export default {
             "table_number": 7,
             "name": "Steak Machette",
             "time": "540",
-            "time_placement": "17:36:24",
+            "time_placement": "1619279336",
 
             "comment": "Without honey",
             "code": "D17",
@@ -108,7 +108,7 @@ export default {
             "table_number": 9,
             "name": "Steak Machette",
             "time": "540",
-            "time_placement": "17:36:24",
+            "time_placement": "1619273836",
             "comment": "Without honey",
             "code": "D17",
             "status": "In progress",
@@ -122,7 +122,7 @@ export default {
             "table_number": 10,
             "name": "Steak Machette",
             "time": "540",
-            "time_placement": "17:36:24",
+            "time_placement": "1619223136",
             "comment": "Without honey",
             "code": "D17",
             "status": "In progress",
@@ -158,6 +158,10 @@ export default {
   .kanban{
     width: 80%;
     height: 100vh;
+  }
+  body{
+    /*font-family: Inter;*/
+    font-style: normal;
   }
 
 </style>

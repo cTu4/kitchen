@@ -31,6 +31,24 @@
 .t-gold{
   color: #C2A823;
 }
+.op-0{
+  opacity: 0;
+}
+.op-1{
+  opacity: 0.2;
+}
+.op-2{
+  opacity: 0.4;
+}
+.op-3{
+  opacity: 0.6;
+}
+.op-4{
+  opacity: 0.8;
+}
+.op-5{
+  opacity: 1;
+}
 
 
 .flex-1{
