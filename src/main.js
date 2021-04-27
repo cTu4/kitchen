@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './kitchen.vue'
+import ProgressBar from 'vuejs-progress-bar'
 
+
+Vue.use(ProgressBar)
 Vue.use(require('vue-moment'));
 
 new Vue({

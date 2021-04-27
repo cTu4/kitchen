@@ -1,8 +1,8 @@
 <template>
   <div>
     <div :class="{red: check_delay}" class="dish white pointer" @click="card_click">
-      <div class="progress">
-        <div class="progress-bar bg-success" role="progressbar" :style="{'width': width}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+      <div v-if="!check_delay" class="progress time-view" :style="{'display': width === 100?'none':'', 'background-color': 'rgba('+ color.r+','+color.g+','+color.b+',0.3'+')'}">
+        <div class="progress-bar " role="progressbar" :style="{'width': width + '%', 'background-color': 'rgb('+ color.r+','+color.g+','+color.b+')', 'opacity': 1}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
       <div class="info d-flex justify-content-between" >
         <div v-if="!check_delay" class="time t-10px"  :class="{'t-white': check_delay}">
@@ -60,30 +60,91 @@ export default {
     },
     timer(){
         this.delay++;
-        this.width = (Math.abs(this.delay) / this.dish.time) * 100;
-        this.cssWidth = Math.round(this.width) + "%";
+      if(this.width === 100){
+        this.check_delay = true;
+        // clearInterval(this.IntervalWidth);
+      }
+      else {
+        this.width = Math.round(((this.dish.time - Math.abs(this.delay)) / this.dish.time) * 100);
+        this.changeColor(this.width);
         if(this.dish.table_number === 3){
-            console.log(this.width,this.cssWidth)
-       }
-    }
+          console.log(this.width, this.color.r +',' +this.color.g +','+ this.color.b);
+        }
+      }
+
+    },
+    changeColor(percentage){
+      if(percentage <= 50){
+          this.color.r = 255 * percentage / 50;
+          this.color.g = 255;
+      }
+      else{
+        this.color.r = 255;
+        this.color.g = (255 * (100 - percentage) / 50);
+      }
+    },
+    getDelay(){
+      let place_time = moment(this.dish.time_placement * 1000);
+      let end_time = moment(this.dish.time_placement * 1000 + this.dish.time * 1000);
+      let now_time = moment();
+      this.delay = now_time.diff(end_time,'seconds');
+      this.IntervalWidth = setInterval(this.timer, 1000);
+
+      this.check_delay = now_time.isAfter(end_time);
+    },
+  },
+  beforeMount(){
+    this.getDelay();
   },
   computed: {
-      check_delay(){
-          let place_time = moment(this.dish.time_placement * 1000);
-          let end_time = moment(this.dish.time_placement * 1000 + this.dish.time * 1000);
-          let now_time = moment();
-          // console.log(place_time.format("H:mm:ss"), end_time.format("H:mm:ss"), now_time.format("H:mm:ss"));
-        this.delay = now_time.diff(end_time,'seconds');
-        setInterval(this.timer, 1000);
-        return now_time.isAfter(end_time);
-      }
+      // check_delay(){
+      //   this.IntervalWidth = setInterval(this.timer, 1000);
+      //   return this.getDelay()
+      // }
   },
   data () {
 
     return {
+      IntervalWidth: '',
+      check_delay: '',
       delay: 0,
       width: 0,
-      cssWidth: 0
+      color: {
+        r: 1,
+        g: 255,
+        b: 122
+      },
+      cssWidth: 0,
+      options: {
+        text: {
+          color: '#FFFFFF',
+          shadowEnable: true,
+          shadowColor: '#000000',
+          fontSize: 14,
+          fontFamily: 'Helvetica',
+          dynamicPosition: false,
+          hideText: true
+        },
+        progress: {
+          color: '#2dbd2d',
+          backgroundColor: '#333333',
+          inverted: false
+        },
+        layout: {
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '5px',
+          width: '80%',
+          margin: '0 auto',
+          borderRadius: '0 0 12px 12px',
+          zeroOffset: 0,
+          strokeWidth: 0,
+          progressPadding: 0,
+          type: 'line'
+        }
+      }
     }
   }
 }
@@ -114,7 +175,7 @@ export default {
   opacity: 0.3;
   /*pointer-events: none*/
 }
-.dish .progress{
+.dish .time-view{
   position: absolute;
   top: 0;
   left: 0;
@@ -124,6 +185,7 @@ export default {
   margin: 0 auto;
   border-radius: 0 0 12px 12px;
 }
+
 .white{
   background: #FFFFFF;
 }

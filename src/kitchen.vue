@@ -45,8 +45,8 @@ export default {
           {
             "table_number": 3,
             "name": "Steak Machette",
-            "time": "1200",
-            "time_placement": "1619271360",
+            "time": "60",
+            "time_placement": "1619553792",
             "comment": "Without honey",
             "code": "D17",
             "status": "In progress",
