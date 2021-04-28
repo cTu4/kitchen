@@ -7,6 +7,7 @@
         </div>
         <right-bar></right-bar>
   </div>
+
 </template>
 
 <script>
@@ -28,7 +29,8 @@ export default {
           "floor": 1,
           "summ": 6.34,
           "time_come": "11:34",
-          "time_gone": "18:00"
+          "time_gone": "18:00",
+          "status":  "free"
         },
         "2": {
           "number": 12,
@@ -37,7 +39,8 @@ export default {
           "floor": 1,
           "summ": 6.34,
           "time_come": "11:34",
-          "time_gone": "18:00"
+          "time_gone": "18:00",
+          "status":  "openned"
         }
       },
       kanban: {
@@ -46,7 +49,7 @@ export default {
             "table_number": 3,
             "name": "Steak Machette",
             "time": "60",
-            "time_placement": "1619553792",
+            "time_placement": "1619629709",
             "comment": "Without honey",
             "code": "D17",
             "status": "In progress",
@@ -60,7 +63,7 @@ export default {
             "table_number": 5,
             "name": "Steak Machette",
             "time": "540",
-            "time_placement": "1619273836",
+            "time_placement": "1619629709",
             "comment": "Without honey",
             "code": "D17",
             "status": "In progress",
@@ -76,7 +79,7 @@ export default {
             "table_number": 6,
             "name": "Steak Machette",
             "time": "540",
-            "time_placement": "1619673336",
+            "time_placement": "1619629709",
 
             "comment": "Without honey",
             "code": "D17",
@@ -141,6 +144,7 @@ export default {
     Column: column,
     RightBar: right_bar,
     Draggable
+
   }
 }
 </script>

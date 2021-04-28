@@ -67,9 +67,7 @@ export default {
       else {
         this.width = Math.round(((this.dish.time - Math.abs(this.delay)) / this.dish.time) * 100);
         this.changeColor(this.width);
-        if(this.dish.table_number === 3){
-          console.log(this.width, this.color.r +',' +this.color.g +','+ this.color.b);
-        }
+
       }
 
     },
