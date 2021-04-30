@@ -1,12 +1,13 @@
 <template>
+
   <div class="column d-flex flex-column">
     <div class="title">
         <span class="text t-24px font-weight-700">{{index}}</span>
-        <span class="summ t-11px t-gray-op3">{{Object.getOwnPropertyNames(dishes).length - 1}}</span>
+        <span class="summ t-11px t-gray-op3">{{dishes.length}}</span>
     </div>
     <div class="subtitle">
       <span class="text">All</span>
-      <span class="summ">{{Object.getOwnPropertyNames(dishes).length - 1}}</span>
+      <span class="summ">{{dishes.length}}</span>
     </div>
     <draggable :list="dishes"
                ghost-class="ghost"
@@ -15,7 +16,7 @@
                @start="move"
     >
       <transition-group type="transition" name="flip-list">
-        <card class="wrap" v-for="dish in dishes" :dish="dish" :key="dish.table_number"></card>
+        <card class="wrap" v-for="dish in dishes" :dish="dish" :status="index" :key="dish.id"></card>
       </transition-group>
     </draggable>
 
@@ -96,6 +97,7 @@ export default {
     width: 33.3%;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
     padding: 16px 12px;
+    overflow-y: hidden;
   }
   .title .summ{
     vertical-align: top;

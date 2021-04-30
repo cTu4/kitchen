@@ -1,41 +1,42 @@
 <template>
   <div>
-    <div :class="{red: check_delay}" class="dish white pointer" @click="card_click">
-      <div v-if="!check_delay" class="progress time-view" :style="{'display': width === 100?'none':'', 'background-color': 'rgba('+ color.r+','+color.g+','+color.b+',0.3'+')'}">
-        <div class="progress-bar " role="progressbar" :style="{'width': width + '%', 'background-color': 'rgb('+ color.r+','+color.g+','+color.b+')', 'opacity': 1}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
-      <div class="info d-flex justify-content-between" >
-        <div v-if="!check_delay" class="time t-10px"  :class="{'t-white': check_delay}">
-          {{dish.time_placement * 1000 | moment("H:mm:ss")}}
+      <div :class="{red: check_delay}" class="dish white pointer" @click="card_click">
+        <div v-if="!check_delay " class="progress time-view" :style="{'display': width === 100?'none':'', 'background-color': 'rgba('+ color.r+','+color.g+','+color.b+',0.3'+')'}">
+          <div class="progress-bar " role="progressbar" :style="{'width': width + '%', 'background-color': 'rgb('+ color.r+','+color.g+','+color.b+')', 'opacity': 1}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
-        <div v-if="check_delay" class="time t-10px"  :class="{'t-white': check_delay}">
-           +{{delay}} SEC
+        <div class="info d-flex justify-content-between" >
+          <div v-if="!check_delay" class="time t-10px"  :class="{'t-white': check_delay }">
+            {{dish.time_placement * 1000 | moment("H:mm:ss")}}
+          </div>
+          <div v-if="check_delay" class="time t-10px"  :class="{'t-white': check_delay }">
+            +{{delay}} SEC
+          </div>
+          <div class="number t-10px font-weight-500" :class="check_delay ? 't-white op-3':'t-gray-op3'">
+            TABLE {{dish.table_number}}
+          </div>
+          <!--              <div class="circle"></div>-->
         </div>
-        <div class="number t-10px font-weight-500" :class="check_delay? 't-white op-3':'t-gray-op3'">
-          TABLE {{dish.table_number}}
+        <div class="name t-15px font-weight-bold" :class="{'t-white':check_delay }">
+          {{dish.name}}
         </div>
-        <!--              <div class="circle"></div>-->
-      </div>
-      <div class="name t-15px font-weight-bold" :class="{'t-white':check_delay}">
-        {{dish.name}}
-      </div>
-      <div class="code t-11px" :class="check_delay? 't-white op-3':'t-gray-op3'">
-        {{dish.code}}
-      </div>
-      <div class="comment t-11px " :class="check_delay? 'white':'grey t-white'">
-        {{dish.comment}}
-      </div>
-      <div class="options d-flex">
-        <div class="option t-11px" v-for="option in dish.options"  :class="{'t-white grey':check_delay}">
-          {{option}}
+        <div class="code t-11px" :class="check_delay? 't-white op-3':'t-gray-op3'">
+          {{dish.code}}
         </div>
+        <div class="comment t-11px " :class="check_delay ? 'white':'grey t-white'">
+          {{dish.comment}}
+        </div>
+        <div class="options d-flex">
+          <div class="option t-11px" v-for="option in dish.options"  :class="{'t-white grey':check_delay }">
+            {{option}}
+          </div>
+        </div>
+      </div>
+      <div class="buttons ">
+        <div class="my_btn t-15px t-white font-weight-600">Start</div>
+        <div class="my_btn t-15px t-white font-weight-600">Comment</div>
       </div>
     </div>
-    <div class="buttons ">
-      <div class="my_btn t-15px t-white font-weight-600">Start</div>
-      <div class="my_btn t-15px t-white font-weight-600">Comment</div>
-    </div>
-  </div>
+
 </template>
 
 <script>
@@ -45,7 +46,8 @@ import rawDisplayer from './rawDisplayer'
 export default {
   name: 'app',
   props: [
-    "dish"
+    "dish",
+      "index"
   ],
   components:{
 
@@ -100,11 +102,15 @@ export default {
       //   return this.getDelay()
       // }
   },
+  mounted(){
+    this.check_ready = this.index === "Ready";
+  },
   data () {
 
     return {
       IntervalWidth: '',
       check_delay: '',
+      check_ready: false,
       delay: 0,
       width: 0,
       color: {

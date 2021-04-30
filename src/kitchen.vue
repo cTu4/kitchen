@@ -3,7 +3,7 @@
   <div id="kitchen" class="d-flex">
         <app-sidebar :tables=tables></app-sidebar>
         <div class="kanban d-flex" >
-          <column v-for="(dishes, index) in kanban" :id="index" :dishes=dishes :index=index></column>
+          <column v-for="(dishes, index) in kanban" :id="index" :dishes=dishes :index=index ></column>
         </div>
         <right-bar></right-bar>
   </div>
@@ -20,7 +20,7 @@ export default {
   name: 'app',
   data() {
     return {
-
+      id: 100,
       tables: {
         "1": {
           "number": 3,
@@ -46,6 +46,7 @@ export default {
       kanban: {
         "Income": [
           {
+            id: 1,
             "table_number": 3,
             "name": "Steak Machette",
             "time": "60",
@@ -60,10 +61,11 @@ export default {
             ]
           },
           {
+            id: 2,
             "table_number": 5,
             "name": "Steak Machette",
-            "time": "540",
-            "time_placement": moment().unix() - 50,
+            "time": "360",
+            "time_placement": moment().unix() - 200,
             "comment": "Without honey",
             "code": "D17",
             "status": "In progress",
@@ -76,11 +78,11 @@ export default {
         ],
         "In Progress": [
           {
+            id: 3,
             "table_number": 6,
             "name": "Steak Machette",
-            "time": "540",
-            "time_placement": "1619629709",
-
+            "time": "300",
+            "time_placement": moment().unix() - 290,
             "comment": "Without honey",
             "code": "D17",
             "status": "In progress",
@@ -91,10 +93,11 @@ export default {
             ]
           },
           {
+            id: 4,
             "table_number": 7,
             "name": "Steak Machette",
-            "time": "540",
-            "time_placement": "1619279336",
+            "time": "1200",
+            "time_placement": moment().unix() - 500,
 
             "comment": "Without honey",
             "code": "D17",
@@ -108,10 +111,11 @@ export default {
         ],
         "Ready": [
           {
+            id: 5,
             "table_number": 9,
             "name": "Steak Machette",
             "time": "540",
-            "time_placement": "1619273836",
+            "time_placement": moment().unix() - 400,
             "comment": "Without honey",
             "code": "D17",
             "status": "In progress",
@@ -122,10 +126,11 @@ export default {
             ]
           },
           {
+            id: 6,
             "table_number": 10,
             "name": "Steak Machette",
             "time": "540",
-            "time_placement": "1619223136",
+            "time_placement": moment().unix() - 300,
             "comment": "Without honey",
             "code": "D17",
             "status": "In progress",
@@ -138,6 +143,49 @@ export default {
         ]
       }
     }
+  },
+  methods:{
+    randomInteger(min, max) {
+      // случайное число от min до (max+1)
+      let rand = min + Math.random() * (max + 1 - min);
+      return Math.floor(rand);
+    },
+     addTable(){
+      let timeout = this.randomInteger(0,60000);
+      let kitchen = this;
+      // let k = this.id++;
+      setTimeout(function (){
+        kitchen.kanban.Income.push({
+          id: kitchen.id,
+          "table_number": kitchen.randomInteger(1,20),
+          "name": "Steak Machette",
+          "time": "120",
+          "time_placement": moment().unix(),
+          "comment": "Without honey",
+          "code": "D17",
+          "status": "In progress",
+          "guest": 3,
+          "options": [
+            "Label",
+            "Label 2"
+          ]
+        });
+        kitchen.id++;
+      }, timeout);
+      console.log(timeout);
+
+     },
+    deleteTable(){
+        console.log(this.kanban.Ready);
+        this.kanban.Ready.pop();
+    }
+  },
+  computed:{
+
+  },
+  mounted(){
+    setInterval(this.addTable, 10000);
+    setInterval(this.deleteTable, 10000);
   },
   components: {
     AppSidebar: sidebar,
