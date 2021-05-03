@@ -3,7 +3,7 @@
   <div id="kitchen" class="d-flex">
         <app-sidebar :tables=tables></app-sidebar>
         <div class="kanban d-flex" >
-          <column v-for="(dishes, index) in kanban" :id="index" :dishes=dishes :index=index ></column>
+          <column v-for="(dishes, index) in kanban" :key="index" :id="index" :dishes=dishes :index=index ></column>
         </div>
         <right-bar></right-bar>
   </div>
@@ -15,6 +15,7 @@ import sidebar from './components/sidebar.vue'
 import column from './components/column.vue'
 import right_bar from './components/right_bar.vue'
 import Draggable from 'vuedraggable'
+import axios from 'axios';
 
 export default {
   name: 'app',
@@ -43,105 +44,7 @@ export default {
           "status":  "openned"
         }
       },
-      kanban: {
-        "Income": [
-          {
-            id: 1,
-            "table_number": 3,
-            "name": "Steak Machette",
-            "time": "60",
-            "time_placement": moment().unix(),
-            "comment": "Without honey",
-            "code": "D17",
-            "status": "In progress",
-            "guest": 3,
-            "options": [
-              "Label",
-              "Label 2"
-            ]
-          },
-          {
-            id: 2,
-            "table_number": 5,
-            "name": "Steak Machette",
-            "time": "360",
-            "time_placement": moment().unix() - 200,
-            "comment": "Without honey",
-            "code": "D17",
-            "status": "In progress",
-            "guest": 3,
-            "options": [
-              "Label",
-              "Label 2"
-            ]
-          }
-        ],
-        "In Progress": [
-          {
-            id: 3,
-            "table_number": 6,
-            "name": "Steak Machette",
-            "time": "300",
-            "time_placement": moment().unix() - 290,
-            "comment": "Without honey",
-            "code": "D17",
-            "status": "In progress",
-            "guest": 3,
-            "options": [
-              "Label",
-              "Label 2"
-            ]
-          },
-          {
-            id: 4,
-            "table_number": 7,
-            "name": "Steak Machette",
-            "time": "1200",
-            "time_placement": moment().unix() - 500,
-
-            "comment": "Without honey",
-            "code": "D17",
-            "status": "In progress",
-            "guest": 3,
-            "options": [
-              "Label",
-              "Label 2"
-            ]
-          }
-        ],
-        "Ready": [
-          {
-            id: 5,
-            "table_number": 9,
-            "name": "Steak Machette",
-            "time": "540",
-            "time_placement": moment().unix() - 400,
-            "comment": "Without honey",
-            "code": "D17",
-            "status": "In progress",
-            "guest": 3,
-            "options": [
-              "Label",
-              "Label 2"
-            ]
-          },
-          {
-            id: 6,
-            "table_number": 10,
-            "name": "Steak Machette",
-            "time": "540",
-            "time_placement": moment().unix() - 300,
-            "comment": "Without honey",
-            "code": "D17",
-            "status": "In progress",
-            "guest": 3,
-            "options": [
-              "Label",
-              "Label 2"
-            ]
-          }
-        ]
-      }
+      kanban: {}
     }
   },
   methods:{
@@ -155,37 +58,54 @@ export default {
       let kitchen = this;
       // let k = this.id++;
       setTimeout(function (){
-        kitchen.kanban.Income.push({
-          id: kitchen.id,
-          "table_number": kitchen.randomInteger(1,20),
-          "name": "Steak Machette",
-          "time": "120",
-          "time_placement": moment().unix(),
-          "comment": "Without honey",
-          "code": "D17",
-          "status": "In progress",
-          "guest": 3,
-          "options": [
+        axios.get("./src/addDish.json").then((resp) =>{
+          let dish = resp.data;
+          dish.id = kitchen.id;
+          dish.name = dish.dishName;
+          dish.table_number = kitchen.randomInteger(1,20);
+          dish.time = dish.prepTime;
+          dish.time_placement = moment().unix();
+          dish.comment = "Without honey";
+          dish.code = "D17";
+          dish.status = "Income";
+          dish.guest = 5;
+          dish.options = [
             "Label",
             "Label 2"
-          ]
-        });
-        kitchen.id++;
+          ];
+          kitchen.kanban.Income.push(dish);
+          kitchen.id++;
+        }).catch((error)=> console.log(error))
       }, timeout);
       console.log(timeout);
 
      },
     deleteTable(){
-        console.log(this.kanban.Ready);
         this.kanban.Ready.pop();
     }
   },
   computed:{
 
   },
+  created() {
+    axios.get("./src/dishes.json").then((resp)=>{
+        let kanban = resp.data.kanban;
+        Object.values(kanban).forEach((column)=>{
+          column.forEach((dish) => dish.time_placement = moment().unix() - this.randomInteger(0,180));
+        });
+        this.kanban = kanban;
+    }).catch((error)=>{
+      console.log(error)
+    });
+
+    // axios.get("https://api.brest.app/kitchen/1/queue").then((resp) =>{
+    //   console.log(resp.data);
+    // }).catch((error)=> console.log(error))
+  },
   mounted(){
     setInterval(this.addTable, 10000);
     setInterval(this.deleteTable, 50000);
+
   },
   components: {
     AppSidebar: sidebar,

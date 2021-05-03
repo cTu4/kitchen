@@ -80,6 +80,10 @@ export default {
         },
         disabled: false,
         ghostClass: "ghost",
+        sort: true,
+        onSort: function (/**Event*/evt) {
+          console.log('aaa');
+        },
       };
     }
   },
@@ -97,12 +101,22 @@ export default {
     width: 33.3%;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
     padding: 16px 12px;
-    overflow-y: hidden;
   }
+
   .title .summ{
     vertical-align: top;
   }
   .wrap{
     position: relative;
+  }
+  .list-group{
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+  .list-group,.list-group span{
+    height: 100%;
+  }
+  ::-webkit-scrollbar {
+    display: none;
   }
 </style>

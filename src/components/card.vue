@@ -171,6 +171,7 @@ export default {
   padding: 12px;
   border-radius: 10px;
   position: relative;
+  touch-action: pinch-zoom;
 }
 .dish.active{
   box-shadow: 0 2px 4px rgba(37,40,44,.02), 0 40px 80px rgba(37,40,44,.3);
