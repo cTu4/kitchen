@@ -185,7 +185,7 @@ export default {
   },
   mounted(){
     setInterval(this.addTable, 10000);
-    setInterval(this.deleteTable, 10000);
+    setInterval(this.deleteTable, 50000);
   },
   components: {
     AppSidebar: sidebar,
