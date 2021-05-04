@@ -14,10 +14,9 @@
                class="list-group"
                v-bind="dragOptions"
                @start="move"
+               @change="change(index, $event)"
     >
-      <transition-group type="transition" name="flip-list">
         <card class="wrap" v-for="dish in dishes" :dish="dish" :status="index" :key="dish.id"></card>
-      </transition-group>
     </draggable>
 
 
@@ -42,7 +41,12 @@ export default {
     card: card
   },
   methods:{
-
+    change(status,e){
+      if(e.added){
+        e.added.element.status = status;
+        // request to change status of dish
+      }
+    },
     move(e){
       let card = $(e.item).find('.dish.active');
       card.toggleClass('active');
@@ -66,7 +70,7 @@ export default {
           DragClass = "Income"
           break;
         case "Ready":
-          DragClass = ["Income","In Progress"];
+          DragClass = ["In Progress"];
           break;
       }
       return DragClass;

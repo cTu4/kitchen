@@ -47,6 +47,7 @@ export default {
       kanban: {}
     }
   },
+
   methods:{
     randomInteger(min, max) {
       // случайное число от min до (max+1)
@@ -59,6 +60,7 @@ export default {
       // let k = this.id++;
       setTimeout(function (){
         axios.get("./src/addDish.json").then((resp) =>{
+
           let dish = resp.data;
           dish.id = kitchen.id;
           dish.name = dish.dishName;
@@ -92,15 +94,21 @@ export default {
         let kanban = resp.data.kanban;
         Object.values(kanban).forEach((column)=>{
           column.forEach((dish) => dish.time_placement = moment().unix() - this.randomInteger(0,180));
+
         });
+        kanban.Income = _.sortBy(kanban.Income, "time_placement");
+        console.log(kanban.Income);
         this.kanban = kanban;
+
     }).catch((error)=>{
       console.log(error)
     });
 
+
     // axios.get("https://api.brest.app/kitchen/1/queue").then((resp) =>{
     //   console.log(resp.data);
-    // }).catch((error)=> console.log(error))
+    // }).catch((error)=> console.log(error));
+
   },
   mounted(){
     setInterval(this.addTable, 10000);

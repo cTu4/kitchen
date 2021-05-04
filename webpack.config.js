@@ -46,9 +46,13 @@ module.exports = {
     extensions: ['*', '.js', '.vue', '.json']
   },
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: false,
     noInfo: true,
     overlay: true,
+    proxy:
+      {
+        "target":'https://api.brest.app/kitchen/1'
+      },
     allowedHosts: [
       'dev-kitchen.brest.app'
 
