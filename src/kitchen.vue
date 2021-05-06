@@ -98,9 +98,9 @@ export default {
       console.log(error)
     });
 
-    // axios.get("https://api.brest.app/kitchen/1/queue").then((resp) =>{
-    //   console.log(resp.data);
-    // }).catch((error)=> console.log(error))
+    axios.get("https://api.brest.app/kitchen/1/queue").then((resp) =>{
+      console.log(resp.data);
+    }).catch((error)=> console.log(error))
   },
   mounted(){
     setInterval(this.addTable, 10000);
