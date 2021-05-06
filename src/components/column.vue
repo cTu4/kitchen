@@ -2,7 +2,7 @@
 
   <div class="column d-flex flex-column">
     <div class="title">
-        <span class="text t-24px font-weight-700">{{status}}</span>
+        <span class="text t-24px font-weight-700">{{column.status}}</span>
         <span class="summ t-11px t-gray-op3">{{column.dishes.length}}</span>
     </div>
     <div class="subtitle">
