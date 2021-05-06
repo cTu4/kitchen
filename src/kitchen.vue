@@ -68,12 +68,12 @@ export default {
   },
 
   methods:{
-    GetDish(dish, kitchen){
+    GetDish(dish, kitchen, delay){
       dish.id = this.id;
       dish.name = dish.dishName;
       dish.table_number = this.randomInteger(1,20);
       dish.time = dish.prepTime;
-      dish.time_placement = moment().unix();
+      dish.time_placement = delay? moment().unix() - this.randomInteger(0,600) : moment().unix() ;
       dish.comment = "Without honey";
       dish.code = "D17";
       dish.status = "Income";
@@ -97,7 +97,7 @@ export default {
       setTimeout(function (){
         axios.get("https://api.brest.app/kitchen/1/queue").then((resp) =>{
 
-          let dish = kitchen.GetDish(resp.data[0], kitchen);
+          let dish = kitchen.GetDish(resp.data[0], kitchen, false);
 
           kitchen.kanban.income.dishes.push(dish);
         }).catch((error)=> console.log(error))
@@ -116,15 +116,15 @@ export default {
 
   for (let i=1;i<5; i+=3){
     axios.get("https://api.brest.app/kitchen/1/queue").then((resp) =>{
-            let dish = this.GetDish(resp.data[0], this);
+            let dish = this.GetDish(resp.data[0], this, true);
             this.kanban.income.dishes.push(dish);
     }).catch((error)=> console.log(error));
     axios.get("https://api.brest.app/kitchen/1/queue").then((resp) =>{
-      let dish = this.GetDish(resp.data[0], this);
+      let dish = this.GetDish(resp.data[0], this, true);
       this.kanban.progress.dishes.push(dish);
     }).catch((error)=> console.log(error));
     axios.get("https://api.brest.app/kitchen/1/queue").then((resp) =>{
-      let dish = this.GetDish(resp.data[0], this);
+      let dish = this.GetDish(resp.data[0], this, true);
       this.kanban.ready.dishes.push(dish);
     }).catch((error)=> console.log(error));
 
