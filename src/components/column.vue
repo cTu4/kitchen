@@ -2,21 +2,21 @@
 
   <div class="column d-flex flex-column">
     <div class="title">
-        <span class="text t-24px font-weight-700">{{index}}</span>
-        <span class="summ t-11px t-gray-op3">{{dishes.length}}</span>
+        <span class="text t-24px font-weight-700">{{status}}</span>
+        <span class="summ t-11px t-gray-op3">{{column.dishes.length}}</span>
     </div>
     <div class="subtitle">
       <span class="text">All</span>
-      <span class="summ">{{dishes.length}}</span>
+      <span class="summ">{{column.dishes.length}}</span>
     </div>
-    <draggable :list="dishes"
+    <draggable :list="column.dishes"
                ghost-class="ghost"
                class="list-group"
                v-bind="dragOptions"
                @start="move"
                @change="change(index, $event)"
     >
-        <card class="wrap" v-for="dish in dishes" :dish="dish" :status="index" :key="dish.id"></card>
+        <card class="wrap" v-for="dish in column.dishes" :dish="dish" :status="status" :key="dish.id"></card>
     </draggable>
 
 
@@ -32,7 +32,8 @@ import card from './card'
 export default {
   name: 'app',
   props: [
-    "dishes",
+    "column",
+    "status",
     "index"
   ],
   components:{
@@ -55,22 +56,23 @@ export default {
 
     }
   },
+
   computed: {
     checkTime(dish){
       console.log(dish);
     },
     DragClass(){
       let DragClass = "";
-      switch (this.index){
-        case "Income":
+      switch (this.status){
+        case "income":
           DragClass = "";
           break;
 
-        case "In Progress":
-          DragClass = "Income"
+        case "progress":
+          DragClass = "income"
           break;
-        case "Ready":
-          DragClass = ["In Progress"];
+        case "ready":
+          DragClass = ["progress"];
           break;
       }
       return DragClass;
@@ -79,7 +81,7 @@ export default {
       return {
         animation: 200,
         group: {
-          name: this.index,
+          name: this.status,
           put: this.DragClass
         },
         disabled: false,
