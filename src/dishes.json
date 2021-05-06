@@ -3,7 +3,7 @@
     "Income": [
       {
         "id": 1,
-        "table_number": 3,
+        "table_number": 8,
         "name": "Steak",
         "time": "120",
         "comment": "Without honey",
@@ -19,7 +19,7 @@
         "id": 2,
         "table_number": 5,
         "name": "Steak Machette",
-        "time": "360",
+        "time": "120",
         "comment": "Without honey",
         "code": "D17",
         "status": "In progress",
