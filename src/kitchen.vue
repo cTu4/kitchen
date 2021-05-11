@@ -22,28 +22,7 @@ export default {
   data() {
     return {
       id: 100,
-      tables: {
-        "1": {
-          "number": 3,
-          "guests": 6,
-          "guests_fact": 5,
-          "floor": 1,
-          "summ": 6.34,
-          "time_come": "11:34",
-          "time_gone": "18:00",
-          "status":  "free"
-        },
-        "2": {
-          "number": 12,
-          "guests": 6,
-          "guests_fact": 5,
-          "floor": 1,
-          "summ": 6.34,
-          "time_come": "11:34",
-          "time_gone": "18:00",
-          "status":  "openned"
-        }
-      },
+      tables: {},
       kanban: {
         'income': {
           status: 'Income',
@@ -77,12 +56,12 @@ export default {
       dish.comment = "Without honey";
       dish.code = "D17";
       dish.status = "Income";
-      dish.guest = 5;
       dish.options = [
         "Label",
         "Label 2"
       ];
       kitchen.id++;
+      console.log(dish);
       return dish;
     },
     randomInteger(min, max) {
@@ -113,7 +92,14 @@ export default {
 
   },
   created() {
-
+    axios.get(" https://api.brest.app/tables/statuses").then((resp) =>{
+      let tabless = resp.data;
+      let data = {};
+      for(let table in tabless){
+        data[table] = tabless[table];
+      }
+      this.tables = data;
+    }).catch((error)=> console.log(error));
 
   for (let i=1;i<5; i+=3){
     axios.get("https://api.brest.app/kitchen/1/queue").then((resp) =>{
@@ -130,7 +116,7 @@ export default {
     }).catch((error)=> console.log(error));
 
   }
-    
+
   },
   mounted(){
     setInterval(this.addTable, 10000);
@@ -148,6 +134,14 @@ export default {
 </script>
 
 <style>
+  body{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;
+  }
   #kitchen{
     background: #e8e9eb;
     height: 100vh;

@@ -3,9 +3,9 @@
       <div class="menu text-center pointer">
           <img src="/src/images/Union.png">
       </div>
-      <div class="table-icon" v-for="table in tables">
-        <div class="t-13px font-weight-700">{{table.number}}</div>
-        <div class="t-13px font-weight-400">{{table.guests}}</div>
+      <div class="table-icon" :class="table.Status === 'Free' ?'blue':'white'" v-for="table in tables">
+        <div class="t-13px font-weight-700" :class="table.Status === 'Free' ? 't-white':''">{{table.Number}}</div>
+        <div class="t-13px font-weight-400" :class="table.Status === 'Free' ? 't-white':''">{{table.Capacity}}</div>
       </div>
     </div>
 </template>
@@ -16,7 +16,6 @@ export default {
   name: 'app',
   data () {
     return {
-
 
     }
   },
@@ -44,10 +43,15 @@ export default {
   cursor: pointer;
   width: 36px;
   height: 36px;
-  background: #FFFFFF;
   border-radius: 4px;
   position: relative;
   margin: 12px 0;
+}
+.white{
+  background: #FFFFFF;
+}
+.blue{
+  background: #1A79EE;
 }
 .table-icon div{
   position: absolute;

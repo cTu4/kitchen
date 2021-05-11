@@ -9,7 +9,7 @@
             {{dish.time_placement * 1000 | moment("H:mm:ss")}}
           </div>
           <div v-if="check_delay" class="time t-10px"  :class="{'t-white': check_delay }">
-            +{{delay}} SEC
+            {{[delay,'seconds'] | duration('as', 'seconds')}} SEC
           </div>
           <div class="number t-10px font-weight-500" :class="check_delay ? 't-white op-3':'t-gray-op3'">
             TABLE {{dish.table_number}}
@@ -42,6 +42,7 @@
 <script>
 import Draggable from 'vuedraggable'
 import rawDisplayer from './rawDisplayer'
+import moment from 'moment';
 
 export default {
   name: 'app',
@@ -50,7 +51,7 @@ export default {
       "index"
   ],
   components:{
-
+    moment
   },
   methods:{
     card_click(e){
@@ -62,6 +63,17 @@ export default {
     },
     timer(){
         this.delay++;
+        if(this.delay > 0){
+          this.sec = this.delay % 60;
+          this.min = Math.trunc(this.delay / 60);
+          this.hour = Math.trunc(this.delay / 3600);
+          this.delay_time = this.hour > 0? this.hour :'00'+ ":" + this.min  > 0? this.min:'00'+ ":" + this.sec;
+
+
+        }
+
+
+
       if(this.width === 100){
         this.check_delay = true;
         // clearInterval(this.IntervalWidth);
@@ -112,6 +124,10 @@ export default {
       check_delay: '',
       check_ready: false,
       delay: 0,
+      sec: 0,
+      min: 0,
+      hour: 0,
+      delay_time: '',
       width: 0,
       color: {
         r: 1,
