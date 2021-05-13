@@ -31,9 +31,17 @@
           </div>
         </div>
       </div>
-      <div class="buttons ">
-        <div class="my_btn t-15px t-white font-weight-600">Start</div>
+      <div v-if="status === 'income'" class="buttons btn-income">
+        <div @click="flow(dish)" class="my_btn t-15px t-white font-weight-600">Start</div>
         <div class="my_btn t-15px t-white font-weight-600">Comment</div>
+      </div>
+
+      <div v-if="status === 'progress'" class="buttons btn-progress">
+        <div @click="flow(dish)" class="my_btn t-15px t-white font-weight-600">Ready</div>
+      </div>
+
+      <div v-if="status === 'ready'" class="buttons btn-progress">
+        <div @click="flow(dish)" class="my_btn t-15px t-white font-weight-600">Give out</div>
       </div>
     </div>
 
@@ -48,12 +56,16 @@ export default {
   name: 'app',
   props: [
     "dish",
-      "index"
+      "index",
+    "status"
   ],
   components:{
     moment
   },
   methods:{
+    flow(dish){
+      this.$emit('onFlow_card', dish);
+    },
     card_click(e){
       var card = $(e.target).closest('.dish');
       card.toggleClass('active');
@@ -115,7 +127,8 @@ export default {
       // }
   },
   mounted(){
-    this.check_ready = this.index === "Ready";
+    console.log(this.dish.id);
+    // this.check_ready = this.index === "Ready";
   },
   data () {
 
@@ -252,6 +265,9 @@ export default {
   bottom: -92px;
   right: 0;
   z-index: 1;
+}
+.buttons.active.btn-progress{
+  bottom: -44px;
 }
 .my_btn{
   cursor: pointer;

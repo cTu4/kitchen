@@ -3,7 +3,7 @@
   <div id="kitchen" class="d-flex">
         <app-sidebar :tables=tables></app-sidebar>
         <div class="kanban d-flex" >
-          <column v-for="(column, status, index) in kanban" :key="index" :id="index" :index="index" :column=column :status=status ></column>
+          <column @onFlow_column="changeStatusDish" v-for="(column, status, index) in kanban" :key="index" :id="index" :index="index" :column=column :status=status ></column>
         </div>
         <right-bar></right-bar>
   </div>
@@ -47,6 +47,23 @@ export default {
   },
 
   methods:{
+    changeStatusDish(index,status, dish){
+      console.log(index,status);
+      console.log(this.kanban[status].dishes[index]);
+      this.kanban[status].dishes.splice(index,1);
+      switch (status){
+        case 'income':
+          dish.status = 'progress';
+          this.kanban.progress.dishes.push(dish);
+          break;
+        case 'progress':
+          dish.status = 'ready';
+          this.kanban.ready.dishes.push(dish);
+          break;
+      }
+      console.log(this.kanban);
+      $('.dish.blur').toggleClass('blur');
+    },
     GetDish(dish, kitchen, delay){
       dish.id = this.id;
       dish.name = dish.dishName;
@@ -55,13 +72,12 @@ export default {
       dish.time_placement = delay? moment().unix() - this.randomInteger(0,600) : moment().unix() ;
       dish.comment = "Without honey";
       dish.code = "D17";
-      dish.status = "Income";
+      dish.status = "income";
       dish.options = [
         "Label",
         "Label 2"
       ];
       kitchen.id++;
-      console.log(dish);
       return dish;
     },
     randomInteger(min, max) {
@@ -74,7 +90,7 @@ export default {
       let kitchen = this;
       // let k = this.id++;
       setTimeout(function (){
-        axios.get("https://api.brest.app/kitchen/1/queue").then((resp) =>{
+        axios.get("https://api.brest.app/kitchen/1/queue/index.php").then((resp) =>{
 
           let dish = kitchen.GetDish(resp.data[0], kitchen, false);
 
@@ -92,26 +108,31 @@ export default {
 
   },
   created() {
-    axios.get(" https://api.brest.app/tables/statuses").then((resp) =>{
-      let tabless = resp.data;
-      let data = {};
-      for(let table in tabless){
-        data[table] = tabless[table];
-      }
-      this.tables = data;
-    }).catch((error)=> console.log(error));
+    // axios.get(" https://api.brest.app/tables/statuses").then((resp) =>{
+    //   let tabless = resp.data;
+    //   let data = {};
+    //   for(let table in tabless){
+    //     data[table] = tabless[table];
+    //   }
+    //   this.tables = data;
+    // }).catch((error)=> console.log(error));
 
   for (let i=1;i<5; i+=3){
-    axios.get("https://api.brest.app/kitchen/1/queue").then((resp) =>{
+    axios.get("https://api.brest.app/kitchen/1/queue/index.php").then((resp) =>{
             let dish = this.GetDish(resp.data[0], this, true);
-            this.kanban.income.dishes.push(dish);
+            dish.status = 'income';
+      // this.kanban.income.dishes[dish.id] = dish;
+
+      this.kanban.income.dishes.push(dish);
     }).catch((error)=> console.log(error));
-    axios.get("https://api.brest.app/kitchen/1/queue").then((resp) =>{
+    axios.get("https://api.brest.app/kitchen/1/queue/index.php").then((resp) =>{
       let dish = this.GetDish(resp.data[0], this, true);
+      dish.status = 'progress';
       this.kanban.progress.dishes.push(dish);
     }).catch((error)=> console.log(error));
-    axios.get("https://api.brest.app/kitchen/1/queue").then((resp) =>{
+    axios.get("https://api.brest.app/kitchen/1/queue/index.php").then((resp) =>{
       let dish = this.GetDish(resp.data[0], this, true);
+      dish.status = 'ready';
       this.kanban.ready.dishes.push(dish);
     }).catch((error)=> console.log(error));
 
@@ -141,10 +162,13 @@ export default {
     -moz-user-select: none;      /* Firefox */
     -ms-user-select: none;       /* Internet Explorer/Edge */
     user-select: none;
+    min-height: 100vh;
+    background: #e8e9eb;
   }
   #kitchen{
-    background: #e8e9eb;
-    height: 100vh;
+    /*min-height: 700px;*/
+    /*height: 100%;*/
+    min-height: 100vh;
     max-width: 1024px;
     margin: auto;
   }
@@ -153,7 +177,7 @@ export default {
   }
   .kanban{
     width: 80%;
-    height: 100vh;
+    /*height: 100%;*/
   }
   body{
     /*font-family: Inter;*/

@@ -26,7 +26,7 @@ export default {
 <style scoped>
 .sidebar{
   width: 60px;
-  height: 100%;
+  /*height: 100%;*/
   background: rgba(247, 248, 250, 0.7);
   box-shadow: 2px 2px 4px rgba(37, 40, 44, 0.02), 10px 30px 60px rgba(37, 40, 44, 0.1);
   backdrop-filter: blur(60px);

@@ -1,6 +1,6 @@
 <template>
 
-  <div class="column d-flex flex-column">
+  <div  class="column d-flex flex-column">
     <div class="title">
         <span class="text t-24px font-weight-700">{{column.status}}</span>
         <span class="summ t-11px t-gray-op3">{{column.dishes.length}}</span>
@@ -16,7 +16,7 @@
                @start="move"
                @change="change(index, $event)"
     >
-        <card class="wrap" v-for="dish in column.dishes" :dish="dish" :status="status" :key="dish.id"></card>
+        <card @onFlow_card="flow" class="wrap" v-for="dish in column.dishes" :dish="dish" :status="status" :key="dish.id"></card>
     </draggable>
 
 
@@ -42,9 +42,25 @@ export default {
     card: card
   },
   methods:{
-    change(status,e){
+    flow(dish){
+      let index = this.column.dishes.indexOf(dish);
+      this.$emit("onFlow_column", index, dish.status,dish);
+    },
+    change(index,e){
       if(e.added){
-        e.added.element.status = status;
+        switch (index){
+          case 0:
+            e.added.element.status = 'income';
+            break;
+          case 1:
+            e.added.element.status = 'progress';
+            break;
+          case 2:
+            e.added.element.status = 'ready';
+            break;
+        }
+
+
         // request to change status of dish
       }
     },
@@ -56,7 +72,9 @@ export default {
 
     }
   },
-
+  mounted() {
+    console.log(this.column)
+  },
   computed: {
     checkTime(dish){
       console.log(dish);
