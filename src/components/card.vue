@@ -1,20 +1,23 @@
 <template>
   <div>
-      <div :class="{red: check_delay}" class="dish white pointer" @click="card_click">
-        <div v-if="!check_delay " class="progress time-view" :style="{'display': width === 100?'none':'', 'background-color': 'rgba('+ color.r+','+color.g+','+color.b+',0.3'+')'}">
+      <div :class="{red: check_delay && status !== 'ready'}" class="dish white pointer" @click="card_click">
+        <div v-if="!check_delay && status !== 'ready'" class="progress time-view" :style="{'display': width === 100?'none':'', 'background-color': 'rgba('+ color.r+','+color.g+','+color.b+',0.3'+')'}">
           <div class="progress-bar " role="progressbar" :style="{'width': width + '%', 'background-color': 'rgb('+ color.r+','+color.g+','+color.b+')', 'opacity': 1}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         <div class="info d-flex justify-content-between" >
-          <div v-if="!check_delay" class="time t-10px"  :class="{'t-white': check_delay }">
+          <div v-if="!check_delay || status === 'ready'" class="time t-10px"  :class="{'t-white': check_delay  }">
             {{dish.time_placement * 1000 | moment("H:mm:ss")}}
           </div>
-          <div v-if="check_delay" class="time t-10px"  :class="{'t-white': check_delay }">
+          <div v-if="check_delay && status !== 'ready'" class="time t-10px"  :class="{'t-white': check_delay }">
             {{[delay,'seconds'] | duration('as', 'seconds')}} SEC
           </div>
-          <div class="number t-10px font-weight-500" :class="check_delay ? 't-white op-3':'t-gray-op3'">
+          <div v-if="status !== 'ready'" class="number t-10px font-weight-500" :class="check_delay ? 't-white op-3':'t-gray-op3'">
             TABLE {{dish.table_number}}
           </div>
-          <!--              <div class="circle"></div>-->
+<!--          <div v-if="!check_delay && status === 'ready'"  class="diagram progress" :class="{over_50: prep >= 50}"   data-percent="10">-->
+<!--            <div class="piece left" ></div>-->
+<!--            <div class="piece right" :style="{'transform': 'rotate('+prep_perc+'deg)'}"></div>-->
+<!--          </div>-->
         </div>
         <div class="name t-15px font-weight-bold" :class="{'t-white':check_delay }">
           {{dish.name}}
@@ -48,12 +51,26 @@ export default {
   name: 'app',
   props: [
     "dish",
-      "index"
+      "index",
+    "status"
   ],
   components:{
     moment
   },
   methods:{
+    progressView(){
+      // let diagramBox = document.querySelectorAll('.diagram.progress');
+      // diagramBox.forEach((box) => {
+      //   let deg = (360 * this.prep / 100) + 180;
+      //   if(box.dataset.percent >= 50){
+      //     box.classList.add('over_50');
+      //   }else{
+      //     box.classList.remove('over_50');
+      //   }
+      //   // box.querySelector('.piece.right').style.transform = 'rotate('+deg+'deg)';
+      // });
+    },
+
     card_click(e){
       var card = $(e.target).closest('.dish');
       card.toggleClass('active');
@@ -63,6 +80,9 @@ export default {
     },
     timer(){
         this.delay++;
+        // this.prep -= 5;
+        // this.prep_perc = (360 * this.prep / 100) + 180;
+        console.log(this.prep);
         if(this.delay > 0){
           this.sec = this.delay % 60;
           this.min = Math.trunc(this.delay / 60);
@@ -116,12 +136,15 @@ export default {
   },
   mounted(){
     this.check_ready = this.index === "Ready";
+    // this.progressView();
   },
   data () {
 
     return {
       IntervalWidth: '',
       check_delay: '',
+      prep: 100,
+      prep_perc: 360,
       check_ready: false,
       delay: 0,
       sec: 0,
@@ -260,7 +283,88 @@ export default {
   padding: 10px;
   min-width: 144px;
   margin-top: 8px;
-  border-radius: 100px;
+  /*border-radius: 100px;*/
   text-align: center;
 }
+.diagram {
+  width: 50px;
+  height:50px;
+  border-radius: 50%;
+  background: #990;
+  position: relative;
+  overflow: hidden;
+}
+/*.diagram::before {*/
+/*  content: '';*/
+/*  display: block;*/
+/*  position: absolute;*/
+/*  top:20px;*/
+/*  left:20px;*/
+/*  right:20px;*/
+/*  bottom:20px;*/
+/*  !*border-radius: 50%;*!*/
+/*  background: #ccc;*/
+/*  z-index: 3;*/
+/*  opacity: 1;*/
+/*}*/
+.diagram .piece {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  position: absolute;
+}
+.diagram .piece::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 50%;
+  height: 100%;
+}
+.diagram .piece.left {
+  transform: rotate(0deg);
+  z-index: 2;
+  border-radius: 50%; /* only FireFox < 75.0v (fix bug)*/
+}
+.diagram.over_50 .piece.left {
+  transform: rotate(180deg);
+}
+.diagram .piece.right {
+  transform: rotate(180deg);
+  z-index: 1;
+  border-radius: 50%; /* only FireFox < 75.0v (fix bug)*/
+}
+.diagram.over_50 .piece.right {
+  transform: rotate(360deg);
+}
+.diagram .left::before {
+  background: #059;
+}
+.diagram.over_50 .left::before {
+  background: #990;
+}
+.diagram .right::before {
+  background: #059;
+}
+.diagram .text {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  left:0;
+  right:0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.diagram .text b {
+  font-size: 72px;
+}
+.diagram .text span {
+  font-size: 16px;
+  display: block;
+}
+
 </style>
