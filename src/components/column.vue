@@ -105,6 +105,7 @@ export default {
         disabled: false,
         ghostClass: "ghost",
         sort: true,
+        delay: 100,
         forceFallback: true,
         scrollSensitivity: 200,
 
@@ -125,6 +126,7 @@ export default {
     width: 33.3%;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
     padding: 16px 12px;
+    height: 100%;
   }
 
   .title .summ{
@@ -136,6 +138,7 @@ export default {
   .list-group{
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
+    max-height: 100vh;
   }
   .list-group,.list-group span{
     height: 100%;
