@@ -90,7 +90,7 @@ export default {
       let kitchen = this;
       // let k = this.id++;
       setTimeout(function (){
-        axios.get("https://api.brest.app/kitchen/1/queue/index.php").then((resp) =>{
+        axios.get("https://api.brest.app/kitchen/").then((resp) =>{
 
           let dish = kitchen.GetDish(resp.data[0], kitchen, false);
 
@@ -118,19 +118,28 @@ export default {
     // }).catch((error)=> console.log(error));
 
   for (let i=1;i<5; i+=3){
-    axios.get("https://api.brest.app/kitchen/1/queue/index.php").then((resp) =>{
+    axios.get("https://api.brest.app/kitchen/").then((resp) =>{
             let dish = this.GetDish(resp.data[0], this, true);
-            dish.status = 'income';
+      // let dish2 = this.GetDish(resp.data[0], this, true);
+      // let dish3 = this.GetDish(resp.data[0], this, true);
+
+      dish.status = 'income';
+      // dish2.status = 'income';
+      // dish3.status = 'income';
+
       // this.kanban.income.dishes[dish.id] = dish;
 
       this.kanban.income.dishes.push(dish);
+      // this.kanban.income.dishes.push(dish2);
+      // this.kanban.income.dishes.push(dish3);
+
     }).catch((error)=> console.log(error));
-    axios.get("https://api.brest.app/kitchen/1/queue/index.php").then((resp) =>{
+    axios.get("https://api.brest.app/kitchen/").then((resp) =>{
       let dish = this.GetDish(resp.data[0], this, true);
       dish.status = 'progress';
       this.kanban.progress.dishes.push(dish);
     }).catch((error)=> console.log(error));
-    axios.get("https://api.brest.app/kitchen/1/queue/index.php").then((resp) =>{
+    axios.get("https://api.brest.app/kitchen/").then((resp) =>{
       let dish = this.GetDish(resp.data[0], this, true);
       dish.status = 'ready';
       this.kanban.ready.dishes.push(dish);
@@ -167,7 +176,8 @@ export default {
   }
   #kitchen{
     /*min-height: 700px;*/
-    /*height: 100%;*/
+    /*max-height: 100%;*/
+    max-height: 800px;
     min-height: 100vh;
     max-width: 1024px;
     margin: auto;

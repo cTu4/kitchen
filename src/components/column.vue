@@ -105,9 +105,9 @@ export default {
         disabled: false,
         ghostClass: "ghost",
         sort: true,
-        onSort: function (/**Event*/evt) {
-          console.log('aaa');
-        },
+        forceFallback: true,
+        scrollSensitivity: 200,
+
       };
     }
   },
