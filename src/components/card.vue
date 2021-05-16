@@ -127,7 +127,9 @@ export default {
       // }
   },
   mounted(){
-    console.log(this.dish.id);
+    // $('.dish').on('touchstart', function (e){
+    //   console.log($(this).closest('.list-group').click());
+    // });
     // this.check_ready = this.index === "Ready";
   },
   data () {

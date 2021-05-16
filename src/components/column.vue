@@ -106,6 +106,7 @@ export default {
         ghostClass: "ghost",
         sort: true,
         delay: 100,
+        delayOnTouchOnly: true,
         forceFallback: true,
         scrollSensitivity: 200,
 

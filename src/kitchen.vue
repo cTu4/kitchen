@@ -145,6 +145,22 @@ export default {
       this.kanban.ready.dishes.push(dish);
     }).catch((error)=> console.log(error));
 
+    // axios.post("https://equilit.eu.auth0.com/oauth/token/",{
+    //   'client_id' : '53MrMuBXG87ERcoyHkYjJmU2rnvAwuaX',
+    //   'client_secret' : "lqQ71jjtaOk-F9zJoUbtMn-n9rgcAHIkkj5yiKCaTjmwke-lHjrQm-Kxf-qBh7bl",
+    //   'audience': 'https://rests.users.api',
+    //   'grant_type': "client_credentials"
+    // }).then((resp) =>{
+    //  let data = resp.data;
+    //   console.log(resp.data.access_token);
+    //
+    //   axios.post("http://rests.users.api/",{
+    //     'authorization' :  "Bearer" + data.access_token
+    //   }).then((response) =>{
+    //     console.log(response)
+    //   });
+    // }).catch((error)=> console.log(error));
+
   }
 
   },
@@ -152,7 +168,9 @@ export default {
     setInterval(this.addTable, 10000);
     setInterval(this.deleteTable, 50000);
 
+
   },
+
   components: {
     AppSidebar: sidebar,
     Column: column,

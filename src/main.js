@@ -1,16 +1,29 @@
 import Vue from 'vue'
 import App from './kitchen.vue'
+import Auth from './auth.vue'
 import ProgressBar from 'vuejs-progress-bar'
+import Notifications from 'vue-notification'
 
+Vue.use(ProgressBar);
+Vue.use(Notifications);
 
-Vue.use(ProgressBar)
 Vue.use(require('vue-moment'));
 
+if($('#app').length){
+  new Vue({
+    el: '#app',
+    render: h => h(App)
+  })
+}
 
-new Vue({
-  el: '#app',
-  render: h => h(App)
-})
+if($('#auth').length){
+  new Vue({
+    el: '#auth',
+    render: h => h(Auth)
+  })
+}
+
+
 
 $(document).mouseup(function (e) {
   var container = $(".dish.active");
